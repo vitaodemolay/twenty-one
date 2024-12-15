@@ -35,6 +35,46 @@ func TestCreatePlayer(t *testing.T) {
 	assert.Equal(t, playerName, game.players[1].name)
 }
 
+func TestGetPlayerName(t *testing.T) {
+	// Arrange
+	game := NewGame()
+	playerName := "Alice"
+	game.CreatePlayer(playerName)
+
+	// Act
+	player, err := game.GetPlayerName(1)
+
+	// Assert
+	assert.Equal(t, playerName, player)
+	assert.Nil(t, err)
+}
+
+func TestGetPlayerNameWithInvalidIndex(t *testing.T) {
+	// Arrange
+	game := NewGame()
+	playerName := "Alice"
+	game.CreatePlayer(playerName)
+
+	// Act
+	player, err := game.GetPlayerName(2)
+
+	// Assert
+	assert.Empty(t, player)
+	assert.EqualError(t, err, "player not found")
+}
+
+func TestGetPlayerNameWithNotExistsPlayers(t *testing.T) {
+	// Arrange
+	game := NewGame()
+
+	// Act
+	player, err := game.GetPlayerName(1)
+
+	// Assert
+	assert.Empty(t, player)
+	assert.EqualError(t, err, "not has players")
+}
+
 func TestStartNewRound(t *testing.T) {
 	// Arrange
 	game := NewGame()

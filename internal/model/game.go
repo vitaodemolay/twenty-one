@@ -124,6 +124,18 @@ func NewGame() *Game {
 	}
 }
 
+func (g *Game) GetPlayerName(index int) (string, error) {
+	if len(g.players) < 1 {
+		return "", errors.New("not has players")
+	}
+
+	if index < 1 || index > len(g.players) {
+		return "", errors.New("player not found")
+	}
+
+	return g.players[index].name, nil
+}
+
 // Game creates a new Player
 func (g *Game) CreatePlayer(name string) {
 	player := NewPlayer(name)
