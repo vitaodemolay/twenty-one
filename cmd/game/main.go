@@ -21,24 +21,12 @@ func main() {
 	fmt.Scanln()
 	showStartingScreen = false
 	time.Sleep(time.Second / 2)
-	questionResult := ""
-	showcase(game_title, func() {
-		pterm.Info.Println("Iniciando um Jogo:")
-		pterm.Println()
-		prompt := pterm.DefaultInteractiveContinue
-		questionResult, _ = prompt.WithDefaultText("Você quer jogar contra o Dealer?").WithOptions([]string{"sim", "não"}).Show()
-		pterm.Println()
-	})
+	questionResult := "sim"
 	for questionResult == "sim" {
 		game := model.NewGame()
+		game.CreatePlayer("Player one")
 
-		showcase(game_title, func() {
-			pterm.Info.Println("Iniciando um Jogo:")
-			pterm.Println()
-			game.CreatePlayer("Player one")
-
-			questionResult, _ = pterm.DefaultInteractiveContinue.WithDefaultText("Você quer jogar contra o Dealer novamente?").WithOptions([]string{"sim", "não"}).Show()
-		})
+		questionResult = showContinueGaming()
 	}
 	showFinalScreen()
 }
@@ -52,6 +40,17 @@ func showcase(title string, content func()) {
 	pterm.DefaultHeader.WithFullWidth().WithBackgroundStyle(pterm.NewStyle(pterm.BgBlue)).Println(title)
 	pterm.Println()
 	content()
+}
+
+func showContinueGaming() string {
+	questionResult := ""
+	showcase(game_title, func() {
+		pterm.Info.Println("Iniciando um Jogo:")
+		pterm.Println()
+		questionResult, _ = pterm.DefaultInteractiveContinue.WithDefaultText("Você quer continuar jogando contra o Dealer?").WithOptions([]string{"sim", "não"}).Show()
+	})
+
+	return questionResult
 }
 
 func showFinalScreen() {
